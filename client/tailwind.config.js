@@ -22,10 +22,12 @@ export default {
       boxShadow: {
         soft: "0 18px 50px rgba(31, 31, 41, 0.09)",
         glow: "0 18px 45px rgba(244, 51, 151, 0.24)",
+        panel: "0 28px 90px rgba(15, 23, 42, 0.18)",
       },
       animation: {
         "fade-up": "fadeUp 0.5s ease both",
         shimmer: "shimmer 1.7s linear infinite",
+        float: "float 6s ease-in-out infinite",
       },
       keyframes: {
         fadeUp: {
@@ -35,6 +37,10 @@ export default {
         shimmer: {
           "0%": { backgroundPosition: "-500px 0" },
           "100%": { backgroundPosition: "500px 0" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
         },
       },
     },

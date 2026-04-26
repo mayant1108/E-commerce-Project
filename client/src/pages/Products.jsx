@@ -140,22 +140,26 @@ const Products = () => {
 
   return (
     <section className="container-shell py-8">
-      <SectionHeader eyebrow="Marketplace" title={heading} />
+      <SectionHeader
+        eyebrow="Marketplace"
+        title={heading}
+        subtitle="Browse the catalogue with the refreshed cards, filters and cleaner shopping layout."
+      />
 
-      <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-brand-100 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-[#191922] sm:flex-row">
+      <div className="mb-5 flex flex-col gap-3 rounded-[28px] border border-white/70 bg-white/80 p-3 shadow-soft dark:border-white/10 dark:bg-[#191922] sm:flex-row">
         <label className="relative flex-1">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
           <input
             value={filters.search}
             onChange={(event) => updateFilters({ ...filters, search: event.target.value })}
             placeholder="Search products"
-            className="focus-ring h-12 w-full rounded-full border border-brand-100 bg-brand-50/70 pl-12 pr-4 text-sm dark:border-white/10 dark:bg-white/5 dark:text-white"
+            className="focus-ring h-12 w-full rounded-full border border-white/60 bg-white/90 pl-12 pr-4 text-sm dark:border-white/10 dark:bg-white/5 dark:text-white"
           />
         </label>
         <select
           value={filters.sort}
           onChange={(event) => updateFilters({ ...filters, sort: event.target.value })}
-          className="focus-ring h-12 rounded-full border border-brand-100 bg-white px-4 text-sm font-bold dark:border-white/10 dark:bg-[#111118] dark:text-white"
+          className="focus-ring h-12 rounded-full border border-white/60 bg-white px-4 text-sm font-bold dark:border-white/10 dark:bg-[#111118] dark:text-white"
         >
           <option value="newest">Newest</option>
           <option value="trending">Trending</option>
