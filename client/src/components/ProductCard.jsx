@@ -12,9 +12,10 @@ const ProductCard = ({ product }) => {
   const discount = getDiscountPercent(product);
   const wishlisted = isWishlisted(productId);
   const statusText = product.isTrending ? "Trending pick" : product.stock <= 20 ? "Low stock" : "Ready to ship";
+  const highlightChips = (product.highlights || []).slice(0, 2);
 
   return (
-    <article className="group overflow-hidden rounded-[28px] border border-white/70 bg-white/90 shadow-soft transition duration-300 hover:-translate-y-2 hover:shadow-panel dark:border-white/10 dark:bg-[#171821]/90">
+    <article className="group surface-card overflow-hidden rounded-[30px] transition duration-300 hover:-translate-y-2 hover:shadow-panel">
       <div className="relative aspect-[4/5] overflow-hidden bg-brand-50 dark:bg-white/5">
         <Link to={detailsPath}>
           <img
@@ -30,6 +31,14 @@ const ProductCard = ({ product }) => {
             {discount}% OFF
           </span>
         )}
+        <div className="absolute bottom-3 left-3 flex flex-wrap gap-2">
+          <span className="rounded-full border border-white/15 bg-black/35 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+            {statusText}
+          </span>
+          <span className="rounded-full border border-white/15 bg-white/15 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+            Free delivery
+          </span>
+        </div>
         <button
           type="button"
           title="Wishlist"
@@ -40,8 +49,14 @@ const ProductCard = ({ product }) => {
         >
           <Heart className="h-5 w-5" fill={wishlisted ? "currentColor" : "none"} />
         </button>
-        <div className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-xs font-bold text-white backdrop-blur">
-          Free delivery
+        <div className="absolute inset-x-3 bottom-3 translate-y-4 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <Link
+            to={detailsPath}
+            className="flex items-center justify-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-black text-brand-600 shadow-lg"
+          >
+            View details
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
 
@@ -51,7 +66,7 @@ const ProductCard = ({ product }) => {
             {product.brand || "Curated label"}
           </p>
           <Link to={detailsPath}>
-            <h3 className="mt-2 line-clamp-2 min-h-[48px] text-[15px] font-extrabold leading-6 text-ink transition hover:text-brand-600 dark:text-white">
+            <h3 className="mt-2 line-clamp-2 min-h-[52px] text-[15px] font-extrabold leading-6 text-ink transition hover:text-brand-600 dark:text-white">
               {product.title}
             </h3>
           </Link>
@@ -78,24 +93,33 @@ const ProductCard = ({ product }) => {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {(product.highlights || []).slice(0, 2).map((highlight) => (
-            <span
-              key={highlight}
-              className="rounded-full border border-brand-100 bg-brand-50/80 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
-            >
-              {highlight}
+          {highlightChips.length ? (
+            highlightChips.map((highlight) => (
+              <span
+                key={highlight}
+                className="rounded-full border border-brand-100 bg-brand-50/80 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
+              >
+                {highlight}
+              </span>
+            ))
+          ) : (
+            <span className="rounded-full border border-brand-100 bg-brand-50/80 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+              Best value find
             </span>
-          ))}
+          )}
         </div>
 
         <div className="flex items-center justify-between gap-3">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">{statusText}</span>
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+            {product.stock > 0 ? `${product.stock} in stock` : "In stock"}
+          </span>
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Budget-smart choice</span>
         </div>
 
         <button
           type="button"
           onClick={() => addToCart(product)}
-          className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#1f1520] text-sm font-black text-white shadow-glow transition hover:bg-brand-600 dark:bg-brand-500"
+          className="button-dark flex h-11 w-full"
         >
           <ShoppingBag className="h-4 w-4" />
           Add to Cart

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Heart, ShieldCheck, ShoppingBag, Star, Truck } from "lucide-react";
+import { Heart, ShieldCheck, ShoppingBag, Sparkles, Star, Truck } from "lucide-react";
 import { useParams } from "react-router-dom";
 import api from "../api/axios";
 import EmptyState from "../components/EmptyState";
@@ -81,21 +81,31 @@ const ProductDetails = () => {
                 key={image}
                 type="button"
                 onClick={() => setSelectedImage(image)}
-                className={`h-24 w-24 shrink-0 overflow-hidden rounded-2xl border bg-white p-1 ${
-                  selectedImage === image ? "border-brand-500" : "border-brand-100 dark:border-white/10"
+                className={`h-24 w-24 shrink-0 overflow-hidden rounded-[22px] border bg-white p-1 ${
+                  selectedImage === image ? "border-brand-500 shadow-soft" : "border-brand-100 dark:border-white/10"
                 }`}
               >
                 <img src={image} alt={product.title} className="h-full w-full rounded-xl object-cover" />
               </button>
             ))}
           </div>
-          <div className="order-1 overflow-hidden rounded-[28px] border border-brand-100 bg-white shadow-soft dark:border-white/10 dark:bg-[#191922] md:order-2">
+          <div className="surface-card order-1 relative overflow-hidden rounded-[32px] md:order-2">
             <img src={selectedImage || product.images?.[0]} alt={product.title} className="aspect-square h-full w-full object-cover" />
+            <div className="absolute inset-x-4 bottom-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[22px] border border-white/15 bg-black/35 p-4 text-white backdrop-blur">
+                <p className="text-xs font-black uppercase tracking-[0.22em] text-brand-200">Quick promise</p>
+                <p className="mt-2 text-sm leading-6 text-white/78">Cleaner product scans, visible discounts and simpler decision-making.</p>
+              </div>
+              <div className="rounded-[22px] border border-white/15 bg-white/15 p-4 text-white backdrop-blur">
+                <p className="text-xs font-black uppercase tracking-[0.22em] text-brand-100">Category match</p>
+                <p className="mt-2 text-sm font-bold">{product.category?.name || product.category?.slug || "Curated collection"}</p>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="premium-card rounded-[28px] p-6 md:p-8">
-          <p className="text-sm font-black uppercase text-brand-600 dark:text-brand-300">{product.brand}</p>
+          <span className="section-chip">{product.brand || "Curated label"}</span>
           <h1 className="mt-3 text-3xl font-black leading-tight text-ink dark:text-white sm:text-4xl">{product.title}</h1>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -120,6 +130,30 @@ const ProductDetails = () => {
 
           <p className="mt-5 leading-7 text-slate-600 dark:text-slate-300">{product.description}</p>
 
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-[24px] border border-brand-100 bg-brand-50/70 p-4 dark:border-white/10 dark:bg-white/5">
+              <div className="flex items-center gap-2 text-sm font-black text-brand-700 dark:text-brand-200">
+                <Truck className="h-4 w-4" />
+                Dispatch ready
+              </div>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Fast-moving catalogue pick with delivery clarity upfront.</p>
+            </div>
+            <div className="rounded-[24px] border border-white/60 bg-white/80 p-4 dark:border-white/10 dark:bg-white/5">
+              <div className="flex items-center gap-2 text-sm font-black text-ink dark:text-white">
+                <ShieldCheck className="h-4 w-4 text-brand-500" />
+                Protected checkout
+              </div>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Secure payment flow and visible final pricing.</p>
+            </div>
+            <div className="rounded-[24px] border border-white/60 bg-white/80 p-4 dark:border-white/10 dark:bg-white/5">
+              <div className="flex items-center gap-2 text-sm font-black text-ink dark:text-white">
+                <Sparkles className="h-4 w-4 text-brand-500" />
+                Curated details
+              </div>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Highlights and reviews are surfaced before the add-to-cart step.</p>
+            </div>
+          </div>
+
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {product.highlights?.map((highlight) => (
               <div key={highlight} className="rounded-2xl bg-brand-50 px-4 py-3 text-sm font-bold text-brand-700 dark:bg-white/5 dark:text-brand-200">
@@ -132,7 +166,7 @@ const ProductDetails = () => {
             <button
               type="button"
               onClick={() => addToCart(product)}
-              className="flex h-12 items-center justify-center gap-2 rounded-full bg-brand-500 px-6 text-sm font-black text-white shadow-glow transition hover:bg-brand-600"
+              className="button-primary flex h-12 px-6"
             >
               <ShoppingBag className="h-5 w-5" />
               Add to Cart
@@ -140,7 +174,7 @@ const ProductDetails = () => {
             <button
               type="button"
               onClick={() => toggleWishlist(product)}
-              className="flex h-12 items-center justify-center gap-2 rounded-full border border-brand-200 px-6 text-sm font-black text-brand-600 transition hover:bg-brand-50 dark:border-brand-500/40 dark:text-brand-200 dark:hover:bg-brand-500/10"
+              className="button-secondary flex h-12 px-6"
             >
               <Heart className="h-5 w-5" fill={isWishlisted(productId) ? "currentColor" : "none"} />
               Wishlist
@@ -161,11 +195,17 @@ const ProductDetails = () => {
       </section>
 
       <section className="container-shell py-8">
-        <SectionHeader eyebrow="More to love" title="Related picks" />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="surface-card rounded-[32px] p-5 sm:p-6">
+          <SectionHeader
+            eyebrow="More to love"
+            title="Related picks"
+            subtitle="Continue browsing inside the same refreshed card system without losing the product context."
+          />
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {relatedProducts.length
-            ? relatedProducts.map((item) => <ProductCard key={item._id} product={item} />)
+            ? relatedProducts.map((item) => <ProductCard key={item._id || item.id} product={item} />)
             : Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)}
+          </div>
         </div>
       </section>
     </>
